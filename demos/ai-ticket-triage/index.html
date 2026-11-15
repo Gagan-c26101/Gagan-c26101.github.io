@@ -52,7 +52,7 @@ $('ticketForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!liveAvailable)return;
  const button=$('analyze');button.disabled=true;button.textContent='Analyzing…';$('mode').textContent='Working';$('mode').className='status';
  try{
-  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),45000);
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),60000);
   let res;
   try{res=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:$('customer').value,channel:$('channel').value,message:$('ticket').value}),signal:controller.signal});}
   finally{clearTimeout(timeout);}
