@@ -20,13 +20,13 @@
 <label for="customer">Customer name (optional)</label><input id="customer" maxlength="80" placeholder="e.g. Priya">
 <label for="channel">Channel</label><select id="channel"><option>Email</option><option>Live chat</option><option>Web form</option><option>Phone follow-up</option></select>
 <label for="ticket">Customer message</label><textarea id="ticket" maxlength="5000" required>Hi, I made a UPI payment of ₹2,500 about 40 minutes ago. The money has been debited from my bank account, but the order still shows payment pending. I need this resolved because the service is time-sensitive. Transaction reference: UPI123456789.</textarea>
-<div class="buttons"><button class="btn primary" id="analyze" type="submit" disabled>Analyze with AI</button><button class="btn" id="sample" type="button">Preview sample result</button></div>
-<p class="hint" id="modeHint">Checking whether the live AI server is available…</p>
+<div class="buttons"><button class="btn primary" id="analyze" type="submit" disabled>Analyze this ticket with AI</button></div>
+<p class="hint" id="modeHint">Checking the AI service…</p>
 </form>
 </section>
 <section class="panel">
 <div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><div><h2>Triage result</h2><p class="muted" style="margin:4px 0 0">Structured output for a support agent to review.</p></div><span id="mode" class="status off">Awaiting input</span></div>
-<div id="empty" class="empty"><div><strong>Ready when you are</strong>Analyze a ticket or load the sample preview.</div></div>
+<div id="empty" class="empty"><div><strong>Ready when you are</strong>Submit a ticket to generate a result based on its actual message.</div></div>
 <div id="result" class="result" aria-live="polite">
 <div class="metrics"><div class="metric"><small>Category</small><strong id="category">—</strong></div><div class="metric"><small>Priority</small><strong id="priority">—</strong></div><div class="metric"><small>Sentiment</small><strong id="sentiment">—</strong></div><div class="metric"><small>Suggested queue</small><strong id="queue">—</strong></div></div>
 <h3>Summary</h3><p id="summary"></p>
@@ -48,8 +48,6 @@ function showResult(data,source){
  $('summary').textContent=data.summary;$('steps').textContent=data.next_steps.map((s,i)=>(i+1)+'. '+s).join('\n');$('reply').textContent=data.draft_reply;
  $('mode').textContent=source;$('mode').className='status'+(source==='Sample preview'?' off':'');
 }
-const sample={category:'Payment issue',priority:'High',sentiment:'Frustrated / concerned',queue:'Payments support',summary:'The customer reports a UPI debit of ₹2,500, but the order remains in pending status after approximately 40 minutes. The customer says the service is time-sensitive and provided a transaction reference.',next_steps:['Verify the transaction reference and payment status with the payment provider.','Check whether a payment webhook or status update is delayed.','Follow the approved reconciliation and refund process; do not promise a resolution time until verified.','Send the customer a status update after checking the transaction.'],draft_reply:'Hi Priya,\n\nI’m sorry for the delay and understand this is time-sensitive. We’ve noted your UPI payment reference and the pending order status. Our payments team will verify the transaction status and check whether the order update is delayed.\n\nPlease do not make a second payment while we investigate. We’ll share an update once the transaction is verified.\n\nThank you for your patience.'};
-$('sample').addEventListener('click',()=>showResult(sample,'Sample preview'));
 $('ticketForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!liveAvailable)return;
  const button=$('analyze');button.disabled=true;button.textContent='Analyzing…';$('mode').textContent='Working';$('mode').className='status';
@@ -60,9 +58,18 @@ $('ticketForm').addEventListener('submit',async e=>{
  }catch(err){$('mode').textContent='Request failed';$('mode').className='status off';alert(err.message+' Check the server and API key, then try again.');}
  finally{button.disabled=false;button.textContent='Analyze with AI';}
 });
-(async()=>{try{const r=await fetch('/api/health');const d=await r.json();liveAvailable=!!d.aiEnabled;}catch{liveAvailable=false;}
+(async()=>{try{
+ const r=await fetch('/api/health');
+ const d=await r.json();
+ liveAvailable=!!r.ok&&!!d.aiEnabled;
+ $('modeHint').textContent=liveAvailable
+  ?'Live AI is connected. Each submission is analyzed from its own message.'
+  :'AI service is not configured. Deploy the included API and set OPENAI_API_KEY to enable ticket-specific analysis.';
+}catch{
+ liveAvailable=false;
+ $('modeHint').textContent='AI service unavailable on this static page. Deploy the included API to Vercel and add OPENAI_API_KEY to enable live, question-specific analysis.';
+}
  $('analyze').disabled=!liveAvailable;
- $('modeHint').textContent=liveAvailable?'Live AI is available on this local server. Your API key stays on the server.':'Hosted sample mode: use “Preview sample result”. For live AI, follow the local setup in the source README.';
-})();
+})();;
 </script>
 </body></html>
