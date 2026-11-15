@@ -25,3 +25,16 @@ The content generator uses deterministic templates; it does not claim to call an
 3. Store campaigns and tasks in a database.
 4. Add campaign analytics ingestion and date-range filters.
 5. Add automated tests for task transitions, webhook filters and CSV escaping.
+
+## Google Sheets + Slack bridge
+
+A Google Apps Script receiver is included at `google-apps-script/Code.gs`. It appends workflow events to a Google Sheet and optionally sends Slack notifications through an Incoming Webhook.
+
+1. Create a Google Sheet.
+2. Open **Extensions → Apps Script** and replace `Code.gs` with the included script.
+3. In Apps Script **Project Settings → Script properties**, add `SLACK_WEBHOOK_URL` with your Slack Incoming Webhook URL.
+4. Choose **Deploy → New deployment → Web app**. Set **Execute as: Me** and access to **Anyone**, then deploy and authorize.
+5. Copy the deployed `/exec` URL into FlowOps → Integrations → Webhook endpoint and save.
+6. Create a test task or update a task status. Check the **FlowOps Events** sheet and the configured Slack channel.
+
+The website sends browser-side event POSTs in no-CORS mode, so it cannot read the receiver's HTTP response. Treat the activity entry as “sent”, not confirmed delivered; verify the row in Sheets and message in Slack. Do not paste the Slack secret into FlowOps or commit it to GitHub.
