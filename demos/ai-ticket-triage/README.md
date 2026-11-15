@@ -12,11 +12,37 @@ A small AI workflow-automation demo that turns a raw customer support message in
 - Structured Outputs through the OpenAI Responses API.
 - Server-side API key handling, input validation and a human-review boundary.
 
-## Try the hosted preview
+## Hosted live demo deployment
 
-Open: https://gagan-c26101.github.io/demos/ai-ticket-triage/
+The frontend and API are now separated so the same ticket form can call a secure serverless endpoint. GitHub Pages alone cannot run the API; the hosted demo needs a backend deployment.
 
-The GitHub Pages version is a static preview and uses clearly labelled sample output. It does not call an AI model or require a key. Live AI analysis is available when the app is run locally with an OpenAI API key.
+To enable live analysis:
+
+1. Import this GitHub repository into Vercel.
+2. Set the Vercel project **Root Directory** to `demos/ai-ticket-triage`.
+3. Add the environment variable `OPENAI_API_KEY` in the Vercel project settings. Optionally set `OPENAI_MODEL` (default: `gpt-4.1-mini`).
+4. Deploy the project.
+5. Attach the Vercel domain to the demo link in the portfolio, or use a rewrite/proxy so `/api/health` and `/api/triage` reach the Vercel deployment.
+
+Never put the API key in HTML, JavaScript, GitHub Pages files or a public repository.
+
+Until the API is deployed and configured, the GitHub Pages demo displays an unavailable status and does not show a fabricated sample result. The live API analyzes the submitted ticket text on each request.
+
+## Run live AI locally
+
+Requirements: Node.js 18+ and an OpenAI API key.
+
+1. Clone the portfolio repository and open this folder:
+   `cd demos/ai-ticket-triage`
+2. Install dependencies:
+   `npm install`
+3. Copy `.env.example` to `.env` and add your key:
+   `cp .env.example .env`
+4. Start the app:
+   `npm start`
+5. Open http://localhost:3000
+
+The API key stays on the server and is never sent to the browser. Change `OPENAI_MODEL` in `.env` if you want to use another model available to your API account.
 
 ## Run live AI locally
 
