@@ -12,7 +12,7 @@
 <body>
 <div class="wrap">
 <nav class="top"><a class="brand" href="../../">gagan<span>.</span> / AI demo</a><a class="back" href="../../">← Back to portfolio</a></nav>
-<header class="hero"><div class="eyebrow">Practical AI · Workflow automation</div><h1>AI Support Ticket<br> Triage Assistant.</h1><p class="intro">Turn an unstructured customer message into a consistent support handoff: category, urgency, concise summary, next steps and a suggested reply. Each submission is analyzed from its actual message using the OpenAI API through a secure server-side endpoint.</p></header>
+<header class="hero"><div class="eyebrow">Practical AI · Workflow automation</div><h1>AI Support Ticket<br> Triage Assistant.</h1><p class="intro">Turn an unstructured customer message into a consistent support handoff: category, urgency, concise summary, next steps and a suggested reply. Each submission is analyzed from its actual message using the Gemini API through a secure server-side endpoint.</p></header>
 <div class="layout">
 <section class="panel">
 <h2>Incoming support ticket</h2><p class="muted">Example: a customer reports a payment or account issue.</p>
@@ -54,9 +54,9 @@ $('ticketForm').addEventListener('submit',async e=>{
  try{
   const res=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:$('customer').value,channel:$('channel').value,message:$('ticket').value})});
   const body=await res.json();if(!res.ok)throw new Error(body.error||'The AI request failed.');
-  showResult(body,'Live AI · OpenAI API');
+  showResult(body,'Live AI · Gemini API');
  }catch(err){$('mode').textContent='Request failed';$('mode').className='status off';alert(err.message+' Check the server and API key, then try again.');}
- finally{button.disabled=false;button.textContent='Analyze with AI';}
+ finally{button.disabled=false;button.textContent='Analyze this ticket with AI';}
 });
 (async()=>{try{
  const r=await fetch('/api/health');
@@ -64,10 +64,10 @@ $('ticketForm').addEventListener('submit',async e=>{
  liveAvailable=!!r.ok&&!!d.aiEnabled;
  $('modeHint').textContent=liveAvailable
   ?'Live AI is connected. Each submission is analyzed from its own message.'
-  :'AI service is not configured. Deploy the included API and set OPENAI_API_KEY to enable ticket-specific analysis.';
+  :'AI service is not configured. Add GEMINI_API_KEY in Vercel Environment Variables to enable ticket-specific analysis.';
 }catch{
  liveAvailable=false;
- $('modeHint').textContent='AI service unavailable on this static page. Deploy the included API to Vercel and add OPENAI_API_KEY to enable live, question-specific analysis.';
+ $('modeHint').textContent='AI service unavailable. Deploy the included API to Vercel and add GEMINI_API_KEY to enable live, question-specific analysis.';
 }
  $('analyze').disabled=!liveAvailable;
 })();;
