@@ -13,6 +13,11 @@ app.disable("x-powered-by");
 app.use(express.json({ limit: "12kb" }));
 app.use(express.static(here));
 
+// Explicitly serve the demo homepage in Vercel's Express deployment.
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(here, "index.html"));
+});
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, aiEnabled: Boolean(client) });
 });
