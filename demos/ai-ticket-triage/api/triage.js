@@ -35,8 +35,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Input is too long or invalid." });
   }
 
-  const primaryModel = process.env.GEMINI_MODEL || "gemini-3.8-flash";
-  const fallbackModels = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.6-flash,gemini-3.5-flash-lite")
+  const primaryModel = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+  const fallbackModels = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.5-flash-lite,gemini-3.8-flash")
     .split(",").map(model => model.trim()).filter(Boolean);
   const models = [...new Set([primaryModel, ...fallbackModels])];
   const prompt = [
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     const ai = new GoogleGenAI({
       apiKey,
       httpOptions: {
-        timeout: 10000,
+        timeout: 14000,
         retryOptions: {
           attempts: 1,
           initialDelay: 0,
