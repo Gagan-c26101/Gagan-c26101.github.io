@@ -56,7 +56,7 @@ $('ticketForm').addEventListener('submit',async e=>{
   let res;
   try{res=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:$('customer').value,channel:$('channel').value,message:$('ticket').value}),signal:controller.signal});}
   finally{clearTimeout(timeout);}
-  const body=await res.json();if(!res.ok)throw new Error(body.error||'The AI request failed.');
+  const raw=await res.text();let body;try{body=JSON.parse(raw);}catch{throw new Error('Server returned a non-JSON response ('+res.status+'). '+raw.slice(0,180));}if(!res.ok)throw new Error(body.error||'The AI request failed.');
   showResult(body,'Live AI · Gemini API');
  }catch(err){$('mode').textContent='Request failed';$('mode').className='status off';const message=err.name==='AbortError'?'The AI request timed out after 45 seconds. Please try again shortly.':err.message;alert(message+' Check the server and API key, then try again.');}
  finally{button.disabled=false;button.textContent='Analyze this ticket with AI';}
