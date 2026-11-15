@@ -52,10 +52,13 @@ $('ticketForm').addEventListener('submit',async e=>{
  e.preventDefault();if(!liveAvailable)return;
  const button=$('analyze');button.disabled=true;button.textContent='Analyzing…';$('mode').textContent='Working';$('mode').className='status';
  try{
-  const res=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:$('customer').value,channel:$('channel').value,message:$('ticket').value})});
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),45000);
+  let res;
+  try{res=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:$('customer').value,channel:$('channel').value,message:$('ticket').value}),signal:controller.signal});}
+  finally{clearTimeout(timeout);}
   const body=await res.json();if(!res.ok)throw new Error(body.error||'The AI request failed.');
   showResult(body,'Live AI · Gemini API');
- }catch(err){$('mode').textContent='Request failed';$('mode').className='status off';alert(err.message+' Check the server and API key, then try again.');}
+ }catch(err){$('mode').textContent='Request failed';$('mode').className='status off';const message=err.name==='AbortError'?'The AI request timed out after 45 seconds. Please try again shortly.':err.message;alert(message+' Check the server and API key, then try again.');}
  finally{button.disabled=false;button.textContent='Analyze this ticket with AI';}
 });
 (async()=>{try{
