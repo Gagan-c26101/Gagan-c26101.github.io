@@ -13,7 +13,7 @@
 <div class="shell">
 <aside class="side"><div class="brand">flow<span>ops</span></div><div class="workspace"><b>Gagan's workspace</b>Marketing & Operations</div>
 <div class="navlabel">WORKSPACE</div><nav class="nav">
-<button class="active" data-view="overview"><span>▦</span>Overview</button><button data-view="content"><span>✎</span>Content studio</button><button data-view="tasks"><span>☷</span>Task board</button><button data-view="integrations"><span>⌘</span>Integrations</button><button data-view="activity"><span>◷</span>Activity log</button>
+<button class="active" data-view="overview"><span>▦</span>Overview</button><button data-view="content"><span>✎</span>Content studio</button><button data-view="tasks"><span>☷</span>Task board</button><button data-view="integrations"><span>⌘</span>Integrations</button><button data-view="architecture"><span>⌬</span>Architecture</button><button data-view="activity"><span>◷</span>Activity log</button>
 </nav><div class="sidefoot">FLOWOPS DEMO · v1.0<br>Data is stored in this browser.</div></aside>
 <main class="main"><header class="top"><div class="crumb">Workspace / <b id="crumb">Overview</b></div><div class="topright"><span class="muted">Local demo mode</span><div class="avatar">G</div></div></header>
 <div class="content">
@@ -34,8 +34,39 @@
 <div class="integration"><div class="ico">G</div><div class="desc"><b>Google Sheets</b><small>Append workflow events to a Google Sheet via Apps Script</small></div><span class="pill green">CSV export</span></div>
 <div class="integration"><div class="ico">↗</div><div class="desc"><b>Custom webhook</b><small>POST workflow events to an automation endpoint</small></div><span class="pill yellow">Configurable</span></div></div>
 <div class="panel"><h2>Webhook configuration</h2><div class="field"><label>Google Apps Script Web App URL (/exec)</label><input id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec"></div><div class="field"><label>Events to send</label><select id="webhookEvent"><option value="all">All events</option><option value="task.created">Task created</option><option value="content.submitted">Content submitted for review</option><option value="task.completed">Task completed</option></select></div><button class="btn primary" onclick="saveWebhook()">Save endpoint</button> <button class="btn" onclick="testWebhook()">Send test event</button><div class="notice">Recommended setup: deploy the included Google Apps Script bridge. It writes events to Google Sheets and sends Slack notifications using a server-side Slack webhook secret. Keep that secret in Apps Script properties, never in this public website. Browser delivery is fire-and-forget; verify receipt in the Sheet and Slack.</div></div></div></section>
+<section class="view" id="architecture"><div class="heading"><div><div class="eyebrow">SYSTEM DESIGN</div><h1>How FlowOps works</h1><p>A transparent view of the data path, integration boundaries and production design.</p></div><span class="pill green">Architecture overview</span></div>
+<div class="panel" style="margin-bottom:15px"><div class="row"><h2>Live demo architecture</h2><span class="pill yellow">Current implementation</span></div><p class="muted" style="font-size:12px">This is the path a real event takes in the current portfolio demo. The browser stores workspace tasks locally; when a webhook is configured, selected events are sent to your Google Apps Script endpoint.</p>
+<div class="grid three" style="align-items:stretch;margin-top:16px">
+<div class="panel"><div class="eyebrow">01 · EXPERIENCE</div><h2 style="margin-top:8px">FlowOps web app</h2><p class="muted">Content brief, task board, approval status and activity log.</p><span class="pill green">Working</span><p class="muted" style="font-size:11px;margin-bottom:0">HTML · CSS · JavaScript · localStorage</p></div>
+<div class="panel"><div class="eyebrow">02 · EVENT DELIVERY</div><h2 style="margin-top:8px">Webhook bridge</h2><p class="muted">Sends task and content events as JSON to the configured Apps Script /exec URL.</p><span class="pill yellow">Configure URL</span><p class="muted" style="font-size:11px;margin-bottom:0">HTTPS POST · browser fire-and-forget</p></div>
+<div class="panel"><div class="eyebrow">03 · DESTINATION</div><h2 style="margin-top:8px">Google Sheets</h2><p class="muted">Apps Script validates/parses the payload and appends an audit row to FlowOps Events.</p><span class="pill yellow">Requires setup</span><p class="muted" style="font-size:11px;margin-bottom:0">Apps Script · Google Sheets</p></div>
+</div><div class="row muted" style="justify-content:center;margin:10px 0;font-size:12px"><span>Task / content event</span><b>→</b><span>HTTPS POST</span><b>→</b><span>Apps Script</span><b>→</b><span>Sheet row</span></div>
+<div class="notice">Delivery is not acknowledged to the browser because the demo uses no-cors mode. Verify the event in the Google Sheet. Slack notifications are optional and only work after a Slack Incoming Webhook URL is stored in Apps Script Script Properties.</div></div>
+<div class="panel" style="margin-bottom:15px"><div class="row"><h2>Target production architecture</h2><span class="pill">Next-stage design</span></div>
+<div class="grid two" style="margin-top:14px">
+<div><div class="item"><div><b>1. Web application</b><small>Authenticated users create campaigns, tasks and approval requests.</small></div><span class="pill">Frontend</span></div>
+<div class="item"><div><b>2. API + authentication</b><small>Server validates identity, permissions, payloads and rate limits.</small></div><span class="pill">API layer</span></div>
+<div class="item"><div><b>3. Workflow engine</b><small>Applies rules, schedules work, handles approvals and retries failed steps.</small></div><span class="pill">Orchestration</span></div>
+<div class="item"><div><b>4. AI service</b><small>Generates content from approved prompts; outputs are schema-checked and require human approval.</small></div><span class="pill">AI provider</span></div></div>
+<div><div class="item"><div><b>5. Database + queue</b><small>Persists users, campaigns, task history and delivery jobs; queue supports retries.</small></div><span class="pill">Persistence</span></div>
+<div class="item"><div><b>6. Integration adapters</b><small>Scoped OAuth/API connections to Google Workspace, Slack and Notion.</small></div><span class="pill">Connectors</span></div>
+<div class="item"><div><b>7. Observability</b><small>Structured logs, delivery status, latency, errors and audit trail.</small></div><span class="pill">Monitoring</span></div>
+<div class="item"><div><b>8. Human controls</b><small>Approval gates, role permissions, data retention and secret management.</small></div><span class="pill">Governance</span></div></div></div>
+<div class="notice">The production components above are the recommended design, not claims that they are already deployed. The current demo intentionally uses a simpler browser → Apps Script → Sheets path so reviewers can test a real integration without requiring a paid backend.</div></div>
+<div class="grid two"><div class="panel"><h2>Event contract example</h2><pre class="output" style="font-size:11px;overflow:auto">{
+  "event": "task.created",
+  "created_at": "ISO-8601 timestamp",
+  "data": {
+    "title": "Prepare launch email",
+    "campaign": "November launch",
+    "owner": "Marketing",
+    "priority": "High",
+    "status": "To do"
+  }
+}</pre></div><div class="panel"><h2>Reliability & security decisions</h2><ul class="muted" style="padding-left:18px;font-size:12px;line-height:1.8"><li>Never put Slack/API secrets in the public frontend.</li><li>Use server-side authentication and request validation before production.</li><li>Add durable queue, retries and idempotency for reliable delivery.</li><li>Track delivery acknowledgements instead of assuming a POST succeeded.</li><li>Keep human approval before publishing external content.</li></ul></div></div>
+</section>
 <section class="view" id="activity"><div class="heading"><div><div class="eyebrow">AUDIT TRAIL</div><h1>Activity log</h1><p>Understand what happened across your workspace.</p></div><button class="btn" onclick="exportCSV()">Export tasks CSV</button></div><div class="panel"><div id="activityRows"></div></div></section>
-<div class="footer">FlowOps is a portfolio prototype. Demo data is stored in local browser storage; external connectors require endpoint configuration and production credentials.</div>
+<div class="footer">FlowOps portfolio demo · Browser tasks are stored locally. Google Sheets sync is a real optional webhook integration; production authentication, database persistence, queue retries and AI generation are documented as next-stage components.</div>
 </div></main></div><div class="toast" id="toast"></div>
 <script>
 const seedTasks=[
@@ -51,7 +82,7 @@ let currentFilter="All",draft="";
 function persist(){localStorage.setItem("flowops_tasks",JSON.stringify(tasks));localStorage.setItem("flowops_activity",JSON.stringify(activities));}
 function log(text,event){activities.unshift({text,time:new Date().toISOString(),event:event||"activity"});activities=activities.slice(0,60);persist();render();}
 function toast(t){let el=document.getElementById("toast");el.textContent=t;el.style.display="block";setTimeout(()=>el.style.display="none",2600)}
-function go(view){document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===view));document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===view));document.getElementById("crumb").textContent=({overview:"Overview",content:"Content studio",tasks:"Task board",integrations:"Integrations",activity:"Activity log"})[view];if(view==="tasks")renderTasks();}
+function go(view){document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===view));document.querySelectorAll("[data-view]").forEach(x=>x.classList.toggle("active",x.dataset.view===view));document.getElementById("crumb").textContent=({overview:"Overview",content:"Content studio",tasks:"Task board",integrations:"Integrations",architecture:"Architecture",activity:"Activity log"})[view];if(view==="tasks")renderTasks();}
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.view)));
 document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{currentFilter=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));renderTasks()}));
 function render(){document.getElementById("statCampaigns").textContent=new Set(tasks.map(t=>t.campaign)).size;document.getElementById("statTasks").textContent=tasks.filter(t=>t.status!=="Done").length;document.getElementById("statReview").textContent=tasks.filter(t=>t.status==="Review").length;document.getElementById("statDone").textContent=tasks.filter(t=>t.status==="Done").length;
