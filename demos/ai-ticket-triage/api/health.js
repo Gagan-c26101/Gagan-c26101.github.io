@@ -5,6 +5,10 @@ export default function handler(req, res) {
   }
   return res.status(200).json({
     ok: true,
-    aiEnabled: Boolean(process.env.GEMINI_API_KEY)
+    aiEnabled: Boolean(process.env.GEMINI_API_KEY || process.env.OPENAI_API_KEY),
+    providers: {
+      gemini: Boolean(process.env.GEMINI_API_KEY),
+      openai: Boolean(process.env.OPENAI_API_KEY)
+    }
   });
 }
