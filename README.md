@@ -1,39 +1,101 @@
-# Gagan — Portfolio website
+# Gagan — Software Engineer & Product Builder
 
-A responsive, single-page developer portfolio built with HTML, CSS and a small amount of JavaScript. No build step or framework is required.
+A responsive personal portfolio showcasing my software engineering experience, selected projects, technical skills, and practical work in AI-assisted workflows and automation.
 
-## Run locally
-Open `index.html` in a browser.
+**Live portfolio:** https://gagan-c26101.github.io/
 
-## Before sharing
-1. Your contact email is set to `gagankc65@gmail.com`.
-2. Add your LinkedIn URL if you want it displayed.
-3. Review each project description and ensure it accurately reflects your work.
-4. Confirm the sample secret file in the Go repository contains no real credentials. Never publish real keys, tokens, passwords or credentials. If a real secret was ever committed, rotate it and remove it from Git history.
-5. Add screenshots or short demo videos for projects where you have permission to share them.
-6. Review company experience wording for confidentiality and accuracy.
+## About the portfolio
 
-## GitHub Pages deployment
-This repository is named `Gagan-c26101.github.io`, so the expected site URL is:
+The website is designed as a simple, fast introduction to my work. It highlights my experience building and supporting production software, backend services, APIs, web applications, integrations, and workflow automation.
 
-https://Gagan-c26101.github.io/
+Visitors can explore project summaries, open live demonstrations, review source repositories, and contact me.
 
-To enable hosting:
-1. Open **Settings → Pages** in this repository.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select branch **main** and folder **/(root)**, then save.
-4. Wait for the Pages deployment to complete. You can check progress in the **Actions** tab.
+## Featured projects
 
-## Files
-- `index.html` — complete portfolio site.
-- `README.md` — project and deployment notes.
+### 1. AI Support Ticket Triage Assistant
 
+A support workflow demonstration that turns an unstructured customer message into a structured handoff for a human support agent.
 
-## AI automation demo
+It demonstrates:
+- Issue classification and priority assessment
+- Sentiment analysis and concise summaries
+- Suggested support queue and verification steps
+- Draft customer responses
+- Structured model output with a human-review step
 
-A portfolio demonstration is available at:
+**Links:** [Live demo](https://gagan-c26101.github.io/demos/ai-ticket-triage/) · [Source code](https://github.com/Gagan-c26101/Gagan-c26101.github.io/tree/main/demos/ai-ticket-triage)
 
-- [AI Support Ticket Triage — hosted preview](https://gagan-c26101.github.io/demos/ai-ticket-triage/)
-- [Source code and setup guide](https://github.com/Gagan-c26101/Gagan-c26101.github.io/tree/main/demos/ai-ticket-triage)
+### 2. FlowOps — Marketing & Operations Automation Hub
 
-The hosted preview is static and displays a labelled sample result. To use live AI, run the Node.js server locally and provide your own OPENAI_API_KEY in a local .env file. Never commit API keys or real customer data.
+A lightweight operations workspace for campaign content, task execution, approvals, activity tracking, and workflow integrations.
+
+It demonstrates:
+- Campaign briefs and content draft generation
+- Task ownership, priorities, and status tracking
+- Review workflow and activity history
+- CSV export
+- Optional webhook integration with Google Apps Script and Google Sheets
+- A visual architecture view showing the current demo flow and a proposed production design
+
+**Links:** [Live demo](https://gagan-c26101.github.io/demos/flowops/) · [Source code](https://github.com/Gagan-c26101/Gagan-c26101.github.io/tree/main/demos/flowops)
+
+### 3. Crypto Next.js Application
+
+A TypeScript and Next.js application demonstrating route organization, reusable components, hooks, utilities, and frontend development.
+
+**Source:** [GitHub repository](https://github.com/Gagan-c26101/crypto-next-js-project)
+
+### 4. Go Backend Service
+
+A structured Go backend project with controllers, database access, jobs, middleware, models, routers, utilities, and validators.
+
+**Source:** [GitHub repository](https://github.com/Gagan-c26101/golang-code)
+
+### 5. Crypto Trading Bot
+
+A Python project exploring triangular-arbitrage detection, with application modules and tests. It is an engineering experiment, not a claim of trading profitability.
+
+**Source:** [GitHub repository](https://github.com/Gagan-c26101/Crypto-Trading-Bot)
+
+### 6. Server Setup Notes
+
+Practical notes covering AWS and Nginx setup and service deployment.
+
+**Source:** [GitHub repository](https://github.com/Gagan-c26101/server-setup)
+
+## Technology
+
+- **Languages:** JavaScript, TypeScript, Python, Go
+- **Frontend:** HTML, CSS, React, Next.js, Angular
+- **Backend:** Node.js, Express, Go, REST APIs
+- **Data & integrations:** SQL, PostgreSQL, webhooks, third-party APIs
+- **Tools & delivery:** Git, GitHub, Docker, AWS, Nginx
+
+## Run the portfolio locally
+
+The portfolio is a static website and does not require a build process.
+
+1. Clone this repository:
+   `git clone https://github.com/Gagan-c26101/Gagan-c26101.github.io.git`
+2. Open the project folder.
+3. Open `index.html` in a browser, or serve the folder with any static web server.
+
+## Repository structure
+
+```text
+.
+├── index.html
+├── demos/
+│   ├── ai-ticket-triage/
+│   └── flowops/
+└── README.md
+```
+
+## Contact
+
+- **Email:** gagankc65@gmail.com
+- **GitHub:** https://github.com/Gagan-c26101
+
+---
+
+© Gagan
