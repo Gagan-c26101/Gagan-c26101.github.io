@@ -35,7 +35,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Input is too long or invalid." });
   }
 
-  const ai = new GoogleGenAI({ apiKey });
   const primaryModel = process.env.GEMINI_MODEL || "gemini-3.8-flash";
   const fallbackModels = (process.env.GEMINI_FALLBACK_MODELS || "gemini-3.6-flash,gemini-3.5-flash-lite")
     .split(",").map(model => model.trim()).filter(Boolean);
@@ -45,39 +44,47 @@ export default async function handler(req, res) {
     `Channel: ${channel}\nCustomer: ${customer.trim() || "Not provided"}\nTicket:\n${message.trim()}`
   ].join("\n\n");
 
-  let lastError;
-  for (const model of models) {
-    try {
-      const response = await ai.models.generateContent({
-        model,
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseJsonSchema: schema,
-          maxOutputTokens: 700
-        }
-      });
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+    let lastError;
 
-      if (!response.text) throw new Error("Gemini returned no structured output.");
-      const result = JSON.parse(response.text);
-      res.setHeader("X-AI-Model", model);
-      return res.status(200).json({ ...result, model_used: model });
-    } catch (error) {
-      lastError = error;
-      const status = Number(error?.status || error?.code || error?.response?.status || 0);
-      const detail = String(error?.message || "");
-      const retryable = [404, 408, 429, 500, 502, 503, 504].includes(status) ||
-        /UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED|temporarily unavailable|model.*not found/i.test(detail);
-      console.error(`Gemini model ${model} failed:`, detail);
-      if (!retryable) break;
+    for (const model of models) {
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+            responseJsonSchema: schema,
+            maxOutputTokens: 700
+          }
+        });
+
+        if (!response.text) throw new Error("Gemini returned no structured output.");
+        const result = JSON.parse(response.text);
+        res.setHeader("X-AI-Model", model);
+        return res.status(200).json({ ...result, model_used: model });
+      } catch (error) {
+        lastError = error;
+        const status = Number(error?.status || error?.code || error?.response?.status || 0);
+        const detail = String(error?.message || "");
+        const retryable = [404, 408, 429, 500, 502, 503, 504].includes(status) ||
+          /UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED|temporarily unavailable|model.*not found/i.test(detail);
+        console.error(`Gemini model ${model} failed:`, detail);
+        if (!retryable) break;
+      }
     }
-  }
 
-  const detail = String(lastError?.message || "Unknown Gemini API error")
-    .replace(apiKey, "[REDACTED]").slice(0, 500);
-  return res.status(502).json({
-    error: "All configured Gemini models failed. Last error: " + detail,
-    attempted_models: models
-  });
+    const detail = String(lastError?.message || "Unknown Gemini API error")
+      .replace(apiKey, "[REDACTED]").slice(0, 500);
+    return res.status(502).json({
+      error: "All configured Gemini models failed. Last error: " + detail,
+      attempted_models: models
+    });
+  } catch (error) {
+    const detail = String(error?.message || "Unexpected server error")
+      .replace(apiKey, "[REDACTED]").slice(0, 500);
+    console.error("Ticket triage server error:", detail);
+    return res.status(500).json({ error: "Ticket triage server error: " + detail });
   }
 }
