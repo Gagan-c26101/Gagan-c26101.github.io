@@ -45,7 +45,18 @@ export default async function handler(req, res) {
   ].join("\n\n");
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        timeout: 10000,
+        retryOptions: {
+          attempts: 1,
+          initialDelay: 0,
+          maxDelay: 0,
+          jitter: 0
+        }
+      }
+    });
     let lastError;
 
     for (const model of models) {
