@@ -22,7 +22,7 @@ This project uses the Google Gemini API free tier for eligible models. Free-tier
 4. Ensure the variable is enabled for Production (and Preview if needed).
 5. Redeploy the project so the new environment variable is loaded.
 
-The default model is `gemini-3.8-flash`. You can override it with `GEMINI_MODEL` if required. Check the current free-tier model availability and quota in Google AI Studio.
+The default model is `gemini-3.5-flash-lite`, selected for lightweight classification and structured extraction. You can override it with `GEMINI_MODEL`. Check the current free-tier model availability and quota in Google AI Studio.
 
 ## Run live AI locally
 
