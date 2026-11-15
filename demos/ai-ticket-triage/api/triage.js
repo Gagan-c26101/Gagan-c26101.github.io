@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       httpOptions: { timeout: 12000, retryOptions: { attempts: 1, initialDelay: 0, maxDelay: 0, jitter: 0 } }
     });
     const models = [...new Set([
-      process.env.GEMINI_MODEL || "gemini-3.8-flash",
+      process.env.GEMINI_MODEL || "gemini-2.5-flash",
       ...(process.env.GEMINI_FALLBACK_MODELS || "gemini-2.5-flash,gemini-2.5-flash-lite").split(",").map(x => x.trim()).filter(Boolean)
     ])];
     for (const model of models) {
