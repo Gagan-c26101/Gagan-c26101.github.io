@@ -4,57 +4,54 @@ A small AI workflow-automation demo that turns a raw customer support message in
 
 ## What it demonstrates
 
-- Ticket classification, priority and sentiment assessment.
-- Concise issue summary and suggested support queue.
-- Safe verification steps and a customer-facing draft reply.
-- Structured JSON output with server-side validation.
-- Automatic provider fallback: Gemini first, then OpenAI if Gemini models fail.
-- Server-side API key handling and human review.
+- Ticket classification across payment, account, order, technical and refund issues.
+- Priority and sentiment assessment.
+- A concise, fact-grounded issue summary.
+- Suggested support queue and verification steps.
+- A customer-facing draft reply.
+- Structured JSON output from the Google Gemini API.
+- Server-side API key handling, input validation and a human-review boundary.
 
-## API providers and free-tier limits
+## Free hosted live demo
 
-### Gemini (primary)
-1. Create a key at https://aistudio.google.com/apikey.
-2. Add `GEMINI_API_KEY` to the Vercel project environment variables.
-3. The default model is `gemini-2.5-flash`, followed by `gemini-2.5-flash-lite`. Free-tier access, quotas and model availability depend on Google's current terms and region.
+This project uses the Google Gemini API free tier for eligible models. Free-tier quotas and model availability can change, and requests may be rate-limited. The free tier may use submitted prompts and responses to improve Google's products, so use synthetic demo tickets only; never submit real customer personal data or confidential information.
 
-### OpenAI (secondary fallback)
-1. Add `OPENAI_API_KEY` only if your OpenAI API account has usable API credits or an eligible free allowance.
-2. The default fallback model is `gpt-4o-mini`.
-3. ChatGPT Free access does not include free API credits. API billing and ChatGPT subscriptions are separate. If the API account has no credits, OpenAI fallback will fail and be reported in diagnostics.
+1. Create a free API key at https://aistudio.google.com/apikey.
+2. In Vercel, open the `ai-ticket-triage` project → Settings → Environment Variables.
+3. Add `GEMINI_API_KEY` with the key from Google AI Studio. Do not paste the key into GitHub or the browser.
+4. Ensure the variable is enabled for Production (and Preview if needed).
+5. Redeploy the project so the new environment variable is loaded.
 
-Both keys are optional individually, but at least one provider key must be configured. The application tries configured Gemini models first, then configured OpenAI models. It accepts a result only after parsing and validating the required JSON fields; malformed or truncated output is treated as a provider failure and the next provider is attempted.
+The default model is `gemini-3.8-flash`. You can override it with `GEMINI_MODEL` if required. Check the current free-tier model availability and quota in Google AI Studio.
 
-## Vercel configuration
+## Run live AI locally
 
-In Vercel → Project → Settings → Environment Variables, add:
-- `GEMINI_API_KEY` (recommended)
-- `OPENAI_API_KEY` (optional fallback)
+Requirements: Node.js 18+ and a Gemini API key.
 
-Optional model overrides:
-- `GEMINI_MODEL` (default `gemini-2.5-flash`)
-- `GEMINI_FALLBACK_MODELS` (default `gemini-2.5-flash-lite`)
-- `OPENAI_MODEL` (default `gpt-4o-mini`)
-- `OPENAI_FALLBACK_MODELS` (optional comma-separated list)
-
-Redeploy after changing environment variables. Never commit real API keys or expose them in browser-side JavaScript.
-
-## Run locally
-
-1. `cd demos/ai-ticket-triage`
-2. `npm install`
-3. Copy `.env.example` to `.env` and add one or both provider keys.
-4. `npm start`
+1. Open this folder: `cd demos/ai-ticket-triage`
+2. Install dependencies: `npm install`
+3. Copy `.env.example` to `.env` and add your key: `cp .env.example .env`
+4. Start the app: `npm start`
 5. Open http://localhost:3000
+
+The API key stays on the server and is never sent to the browser.
+
+## Workflow
+
+1. A customer submits an unstructured support message.
+2. The server validates the input and sends it to Gemini.
+3. A JSON schema constrains the response to known fields and categories.
+4. The UI displays the category, priority, sentiment, queue, summary, next steps and suggested reply.
+5. A human support agent verifies transaction/account details and approves any customer communication.
 
 ## Safety and limitations
 
-- Use synthetic demo tickets only; do not submit real customer personal data, credentials, payment details or confidential information.
-- Free-tier quotas, rate limits, model availability and provider pricing can change.
-- The model cannot access payment systems, customer accounts or internal policies.
-- A human support agent must verify all suggested actions and approve customer communication.
-- The demo never automatically issues refunds, changes accounts or sends messages.
+- This is a portfolio demonstration, not a production support system.
+- Do not paste real customer personal data, credentials, card details or sensitive information.
+- The model does not access payment systems, customer accounts or internal policies.
+- Suggested actions and replies must be checked by a human. The demo must not automatically issue refunds, change accounts or send messages.
+- Free-tier quotas are limited and can change. A quota error means the free allowance or rate limit has been reached; retry after the quota resets or check Google AI Studio.
 
 ## Stack
 
-HTML, CSS, JavaScript, Node.js, Vercel Functions, Google GenAI SDK and OpenAI SDK.
+HTML, CSS, JavaScript, Node.js, Express, Google GenAI JavaScript SDK and Gemini API.
