@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gagan — Software Engineer focused on product engineering, backend systems, integrations and practical automation." />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Gagan — Software Engineer & Product Builder</title>
+  <style>
+    :root{--bg:#0b1020;--panel:#111a2e;--panel2:#0e1729;--text:#edf3ff;--muted:#9aabc5;--line:#26344d;--accent:#75e0c1;--accent2:#8aa8ff;--max:1120px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 0%,#172544 0,transparent 32%),var(--bg);color:var(--text);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:inherit;text-decoration:none}.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12}
+    .brand{font-weight:800;letter-spacing:-.04em;font-size:20px}.brand span{color:var(--accent)}.navlinks{display:flex;gap:25px;color:var(--muted);font-size:14px}.navlinks a:hover,.textlink:hover{color:var(--accent)}
+    .hero{padding:100px 0 84px;display:grid;grid-template-columns:1.35fr .65fr;gap:56px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--accent);font:700 12px ui-monospace,monospace;letter-spacing:.13em;text-transform:uppercase}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+    h1{font-size:clamp(44px,7vw,76px);line-height:1.02;letter-spacing:-.065em;margin:22px 0}
+    h1 em{font-style:normal;color:var(--accent)}
+    .lead{font-size:19px;line-height:1.7;color:#bdc9dc;max-width:690px}
+    .actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
+    .btn{display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border-radius:9px;font-weight:700;font-size:14px;border:1px solid var(--line);transition:.2s}
+    .btn.primary{background:var(--accent);color:#08131b;border-color:var(--accent)}.btn:hover{transform:translateY(-2px)}
+    .terminal{background:#0a1221;border:1px solid #30415e;border-radius:15px;box-shadow:0 24px 80px #0005;overflow:hidden;transform:rotate(1.5deg)}
+    .termhead{padding:13px 16px;border-bottom:1px solid #ffffff12;display:flex;gap:7px}.orb{width:9px;height:9px;border-radius:50%;background:#52647d}
+    .termcontent{padding:22px 20px 27px;font:13px/2 ui-monospace,SFMono-Regular,Consolas,monospace;color:#b8c7dd}
+    .termcontent .green{color:var(--accent)}.termcontent .blue{color:var(--accent2)}.termcontent .dim{color:#6f819e}
+    section{padding:70px 0;border-top:1px solid #ffffff12}.section-head{display:flex;justify-content:space-between;gap:25px;align-items:end;margin-bottom:30px}
+    .kicker{color:var(--accent);font:700 12px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase}
+    h2{font-size:clamp(29px,4vw,42px);letter-spacing:-.045em;line-height:1.12;margin:9px 0 0}
+    .sub{color:var(--muted);max-width:560px;margin:0}
+    .aboutgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+    .card{background:linear-gradient(145deg,#142039,#10192c);border:1px solid var(--line);border-radius:14px;padding:25px}
+    .card p{color:#b7c5d9;margin:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .stat{padding:18px;background:#0c1527;border:1px solid var(--line);border-radius:11px}.stat strong{display:block;font-size:25px;color:var(--accent);letter-spacing:-.04em}.stat span{font-size:12px;color:var(--muted)}
+    .projectgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:17px}
+    .project{display:flex;flex-direction:column;min-height:275px}.projecttop{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .tag{font:11px ui-monospace,monospace;color:var(--accent);background:#75e0c116;border:1px solid #75e0c13b;padding:5px 8px;border-radius:5px}
+    .project h3{font-size:21px;letter-spacing:-.025em;margin:20px 0 8px}.project p{font-size:14px;color:#aebdd2;margin:0 0 18px}
+    .stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}.stack span{font:11px ui-monospace,monospace;color:#b9c8dc;background:#0b1425;border:1px solid #293852;padding:5px 8px;border-radius:5px}
+    .projectlinks{display:flex;gap:15px;margin-top:18px;font-size:13px;color:var(--accent);font-weight:700}
+    .note{margin-top:17px;color:#8fa2bd;font-size:12px}
+    .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.skill h3{font-size:15px;margin:0 0 13px}.skill p{font-size:13px;color:var(--muted);margin:0}
+    .pills{display:flex;flex-wrap:wrap;gap:8px}.pills span{padding:7px 10px;border-radius:7px;background:#0b1425;border:1px solid #293852;color:#c4d0e1;font-size:12px}
+    .timeline{display:grid;grid-template-columns:150px 1fr;gap:25px;padding:22px 0;border-bottom:1px solid #ffffff12}.timeline:last-child{border:0}.time{font:12px ui-monospace,monospace;color:var(--accent)}.timeline h3{margin:0 0 5px;font-size:17px}.timeline p{margin:0;color:var(--muted);font-size:14px}
+    .callout{display:flex;justify-content:space-between;align-items:center;gap:25px;background:linear-gradient(110deg,#17302f,#14203a);border:1px solid #3b685f;border-radius:15px;padding:30px}
+    .callout h2{font-size:30px}.callout p{color:#b6c8d2;margin:8px 0 0}
+    footer{padding:30px 0 45px;color:#8294ad;font-size:12px;display:flex;justify-content:space-between;gap:20px}
+    @media(max-width:800px){.hero{grid-template-columns:1fr;padding:72px 0}.terminal{max-width:520px}.aboutgrid,.skills{grid-template-columns:1fr}.section-head{display:block}.sub{margin-top:12px}.navlinks{gap:12px}.navlinks a:nth-child(2){display:none}}
+    @media(max-width:600px){.wrap{width:min(100% - 28px,var(--max))}.nav{height:65px}.navlinks{font-size:12px;gap:10px}.hero{padding:58px 0}.lead{font-size:16px}.projectgrid{grid-template-columns:1fr}.timeline{grid-template-columns:1fr;gap:7px}.callout{display:block}.callout .btn{margin-top:20px}footer{display:block}footer span{display:block;margin-top:8px}}
+  </style>
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="#top">gagan<span>.</span></a>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#about">About</a><a href="#work">Projects</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> Software Engineer · Product-minded builder</div>
+        <h1>Building useful<br/><em>things that work.</em></h1>
+        <p class="lead">I'm Gagan, a software engineer with 3 years of experience building and supporting production software. I work across backend systems, APIs, web applications and integrations — with a growing focus on practical AI and workflow automation.</p>
+        <div class="actions">
+          <a class="btn primary" href="#work">Explore projects <span>↘</span></a>
+          <a class="btn" href="https://github.com/Gagan-c26101" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a class="btn" href="mailto:gagankc65@gmail.com">Email me ↗</a>
+        </div>
+      </div>
+      <div class="terminal" aria-label="Code terminal illustration">
+        <div class="termhead"><i class="orb"></i><i class="orb"></i><i class="orb"></i></div>
+        <div class="termcontent">
+          <div><span class="dim">~/gagan</span> <span class="green">$</span> whoami</div>
+          <div class="blue">product-minded engineer</div>
+          <div><span class="dim">~/gagan</span> <span class="green">$</span> focus --areas</div>
+          <div>backend systems</div><div>API integrations</div><div>web applications</div><div>automation workflows</div>
+          <div><span class="dim">~/gagan</span> <span class="green">$</span> status</div>
+          <div class="green">● Open to building what matters</div>
+          <div><span class="dim">~/gagan</span> <span class="green">$</span> <span class="blue">_</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">01 / About</div><h2>Engineering with<br/>the problem in mind.</h2></div><p class="sub">I enjoy taking an unclear problem, understanding the workflow behind it and turning it into a reliable technical solution.</p></div>
+        <div class="aboutgrid">
+          <div class="card"><p>My experience spans fintech and consumer-facing applications, backend API development, frontend engineering, production issue investigation and technology migrations. I've worked in startup environments where shipping, debugging and collaborating across functions are part of everyday engineering.<br/><br/>I care about maintainable systems, clear communication and choosing the simplest solution that reliably solves the problem. I'm currently deepening my hands-on work in AI-assisted development and business process automation.</p></div>
+          <div class="stats">
+            <div class="stat"><strong>3 years</strong><span>Software engineering experience</span></div>
+            <div class="stat"><strong>Full stack</strong><span>Frontend + backend delivery</span></div>
+            <div class="stat"><strong>Fintech</strong><span>Production product experience</span></div>
+            <div class="stat"><strong>APIs</strong><span>Integrations & service workflows</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">02 / Selected work</div><h2>Projects & engineering work.</h2></div><p class="sub">A selection of personal repositories and professional experience. Open the source repositories for implementation details.</p></div>
+        <div class="projectgrid">
+          <article class="card project">
+            <div class="projecttop"><span class="tag">PERSONAL PROJECT</span><span class="tag">01</span></div>
+            <h3>Crypto Next.js Application</h3>
+            <p>A TypeScript and Next.js application organized into app routes, reusable components, hooks, library utilities and styling. A showcase of frontend structure and component-driven development.</p>
+            <div class="stack"><span>Next.js</span><span>TypeScript</span><span>React</span><span>Tailwind CSS</span></div>
+            <div class="projectlinks"><a href="https://github.com/Gagan-c26101/crypto-next-js-project" target="_blank" rel="noreferrer">View repository ↗</a></div>
+          </article>
+          <article class="card project">
+            <div class="projecttop"><span class="tag">PERSONAL PROJECT</span><span class="tag">02</span></div>
+            <h3>Go Backend Service</h3>
+            <p>A structured Go backend repository with controllers, database, jobs, middleware, models, routers, utilities and validators. Includes a Dockerfile and Kubernetes deployment configuration.</p>
+            <div class="stack"><span>Go</span><span>REST APIs</span><span>Docker</span><span>Kubernetes</span></div>
+            <div class="projectlinks"><a href="https://github.com/Gagan-c26101/golang-code" target="_blank" rel="noreferrer">View repository ↗</a></div>
+            <div class="note">The repository includes a sample secret file; verify it contains no real credentials before sharing this project publicly.</div>
+          </article>
+          <article class="card project">
+            <div class="projecttop"><span class="tag">PERSONAL PROJECT</span><span class="tag">03</span></div>
+            <h3>Crypto Trading Bot</h3>
+            <p>A Python project exploring triangular-arbitrage detection, with a dedicated module, application entry point and tests. Presented as an engineering experiment, not a claim of trading profitability.</p>
+            <div class="stack"><span>Python</span><span>Automation</span><span>Testing</span></div>
+            <div class="projectlinks"><a href="https://github.com/Gagan-c26101/Crypto-Trading-Bot" target="_blank" rel="noreferrer">View repository ↗</a></div>
+          </article>
+          <article class="card project">
+            <div class="projecttop"><span class="tag">PERSONAL PROJECT</span><span class="tag">04</span></div>
+            <h3>Server Setup Notes</h3>
+            <p>Practical deployment notes covering AWS and Nginx setup. Documents infrastructure configuration and the steps involved in getting services running.</p>
+            <div class="stack"><span>AWS</span><span>Nginx</span><span>Deployment</span></div>
+            <div class="projectlinks"><a href="https://github.com/Gagan-c26101/server-setup" target="_blank" rel="noreferrer">View repository ↗</a></div>
+          </article>
+        </div>
+        <p class="note">Professional experience: fintech platform engineering, payment and service API integrations, consumer application development, production troubleshooting and frontend/backend migrations. Company-specific details and code are intentionally not published here.</p>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">03 / Toolkit</div><h2>Tools I work with.</h2></div><p class="sub">A practical toolkit across application development, backend engineering and delivery.</p></div>
+        <div class="skills">
+          <div class="card skill"><h3>Languages & backend</h3><div class="pills"><span>JavaScript</span><span>TypeScript</span><span>Python</span><span>Go</span><span>Node.js</span><span>REST APIs</span></div></div>
+          <div class="card skill"><h3>Frontend & data</h3><div class="pills"><span>Next.js</span><span>React</span><span>Angular</span><span>SQL</span><span>PostgreSQL</span></div></div>
+          <div class="card skill"><h3>Engineering & delivery</h3><div class="pills"><span>Git</span><span>GitHub</span><span>Docker</span><span>AWS</span><span>Nginx</span><span>Debugging</span><span>Testing</span></div></div>
+          <div class="card skill"><h3>Integrations</h3><div class="pills"><span>Webhooks</span><span>Third-party APIs</span><span>Payment workflows</span><span>Service integrations</span></div></div>
+          <div class="card skill"><h3>AI & automation focus</h3><p>Currently focused on applying AI APIs, AI-assisted development and workflow automation to practical business processes. Portfolio demonstrations will be added as they are built and tested.</p></div>
+          <div class="card skill"><h3>How I work</h3><p>Understand the requirement · choose build vs. buy · ship in small steps · test edge cases · document the result · own it after release.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="wrap">
+        <div class="section-head"><div><div class="kicker">04 / Experience</div><h2>Production engineering.</h2></div></div>
+        <div class="card">
+          <div class="timeline"><div class="time">2023 — PRESENT</div><div><h3>Software Engineer · Fintech</h3><p>Contributed to production fintech and consumer-facing products, API integrations, payment and booking workflows, application migrations and production issue investigation as part of a cross-functional engineering team.</p></div></div>
+          <div class="timeline"><div class="time">SELECTED WORK</div><div><h3>Product & platform contributions</h3><p>Worked on recharge, bill-payment and crypto/fiat workflows; transport inquiry integrations; frontend component improvements; and backend/frontend modernization. Specific implementation details can be discussed without exposing confidential company information.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="callout">
+          <div><div class="kicker">05 / Contact</div><h2>Have a problem worth solving?</h2><p>I'm interested in product engineering, integrations and practical automation opportunities.</p></div>
+          <a class="btn primary" href="mailto:gagankc65@gmail.com">Get in touch ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap"><span>© <span id="year"></span> Gagan. Built with care.</span><span><a class="textlink" href="https://github.com/Gagan-c26101" target="_blank" rel="noreferrer">GitHub</a> · LinkedIn profile not added yet.</span></footer>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
