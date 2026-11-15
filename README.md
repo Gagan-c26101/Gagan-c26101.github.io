@@ -27,3 +27,13 @@ To enable hosting:
 ## Files
 - `index.html` — complete portfolio site.
 - `README.md` — project and deployment notes.
+
+
+## AI automation demo
+
+A portfolio demonstration is available at:
+
+- [AI Support Ticket Triage — hosted preview](https://gagan-c26101.github.io/demos/ai-ticket-triage/)
+- [Source code and setup guide](https://github.com/Gagan-c26101/Gagan-c26101.github.io/tree/main/demos/ai-ticket-triage)
+
+The hosted preview is static and displays a labelled sample result. To use live AI, run the Node.js server locally and provide your own OPENAI_API_KEY in a local .env file. Never commit API keys or real customer data.
